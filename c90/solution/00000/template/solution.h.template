@@ -1,0 +1,3 @@
+int
+${SOLUTION_FUNCTION_NAME}
+    (void);

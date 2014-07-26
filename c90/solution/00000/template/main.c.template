@@ -1,0 +1,12 @@
+#include <stdio.h>
+
+#include "solution.h"
+
+int
+main
+    (void)
+{
+
+    printf("solution == %d\n", ${SOLUTION_FUNCTION_NAME}());
+    return 0;
+}

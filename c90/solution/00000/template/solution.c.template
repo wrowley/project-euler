@@ -1,0 +1,10 @@
+/**
+  * Problem description here
+  */
+
+int
+${SOLUTION_FUNCTION_NAME}
+    (void)
+{
+    return 0;
+}
