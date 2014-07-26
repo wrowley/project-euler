@@ -18,22 +18,22 @@ void
 print_solution
     (euler_solution *p_solution)
 {
-    int f0;
-    int f1;
-    int tmp;
+    unsigned long f0;
+    unsigned long f1;
+    unsigned long tmp;
 
-    int sum = 0;
+    unsigned long sum = 0;
 
-    for (f0=0, f1=1; f1 < 4000000; tmp = f1, f1 = f0 + f1, f0 = tmp)
+    for (f0 = 0, f1 = 1; f1 < 4000000; tmp = f1, f1 += f0, f0 = tmp)
     {
-        if ((f1 % 2) == 0)
+        if (!(f1 & 1))
         {
-            printf("%d\n",f1);
+            printf("%lu\n",f1);
             sum += f1;
         }
     }
 
-    printf("sum == %d\n", sum);
+    printf("sum == %lu\n", sum);
 }
 
 void
