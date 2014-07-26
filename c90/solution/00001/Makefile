@@ -1,10 +1,10 @@
 CC=gcc
 CFLAGS=-c -Wall
 
-solution.o:
+solution.o: solution.c solution.h
 	$(CC) $(CFLAGS) solution.c
 
-main.o:
+main.o: main.c solution.h
 	$(CC) $(CFLAGS) main.c
 
 solve: solution.o main.o
