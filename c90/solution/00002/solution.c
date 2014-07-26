@@ -8,12 +8,15 @@
   *
   * By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms.
   */
+#include "solution.h"
 #include <stdio.h>
 
 /* Note the datatype for this solution is not good enough. An int only guarantees 16-bits, which is not enough for this solution. */
-int
-solve00002
-    (void)
+
+static
+void
+print_solution
+    (euler_solution *p_solution)
 {
     int f0;
     int f1;
@@ -30,5 +33,12 @@ solve00002
         }
     }
 
-    return sum;
+    printf("sum == %d\n", sum);
+}
+
+void
+solve00002
+    (euler_solution *p_solution)
+{
+    p_solution->print_solution = print_solution;
 }

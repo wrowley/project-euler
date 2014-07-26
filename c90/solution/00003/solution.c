@@ -13,7 +13,7 @@ print_solution
 }
 
 void
-${SOLUTION_FUNCTION_NAME}
+solve00003
     (euler_solution *p_solution)
 {
     p_solution->print_solution = print_solution;

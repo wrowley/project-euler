@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "solution.h"
 
 int
@@ -7,6 +5,8 @@ main
     (void)
 {
 
-    printf("solution == %d\n", ${SOLUTION_FUNCTION_NAME}());
+    euler_solution soln;
+    ${SOLUTION_FUNCTION_NAME}(&soln);
+    soln.print_solution(&soln);
     return 0;
 }

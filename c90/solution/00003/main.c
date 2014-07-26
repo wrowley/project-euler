@@ -1,4 +1,3 @@
-#include "common/eulersolution.h"
 #include "solution.h"
 
 int
@@ -7,7 +6,7 @@ main
 {
 
     euler_solution soln;
-    solve00002(&soln);
+    solve00003(&soln);
     soln.print_solution(&soln);
     return 0;
 }

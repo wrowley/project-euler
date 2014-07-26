@@ -1,3 +1,5 @@
-int
+#include "common/eulersolution.h"
+
+void
 solve00002
-    (void);
+    (euler_solution *p_solution);

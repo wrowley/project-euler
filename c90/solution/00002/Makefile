@@ -1,5 +1,6 @@
 CC=gcc
-CFLAGS=-c -Wall
+INCLUDE=../..
+CFLAGS=-c -Wall -I$(INCLUDE)
 
 solution.o: solution.c solution.h
 	$(CC) $(CFLAGS) solution.c
