@@ -8,6 +8,7 @@ struct euler_state_s
 {
     int some_thing;
     float some_thing_else;
+    int array[100];
 };
 
 static
@@ -19,7 +20,7 @@ print_solution
 }
 
 void
-solve00003
+solve00004
     (euler_solution *p_solution)
 {
     euler_state es = {0};
