@@ -7,6 +7,14 @@
   * Find the sum of all the multiples of 3 or 5 below 1000.
   */
 
+#include <stdio.h>
+#include "common/eulersolution.h"
+
+struct euler_state_s
+{
+    int sum;
+};
+
 static
 int
 is_multiple_of
@@ -17,10 +25,40 @@ is_multiple_of
     return (((a/factor)*factor) == a);
 }
 
-int
-solve00001
-    (void)
+static
+size_t
+memory
+    ()
 {
+    return sizeof(euler_state);
+}
+
+static
+euler_state *
+init
+    (void        *p_mem
+    )
+{
+    euler_state *p_state = (euler_state*)p_mem;
+    return p_state;
+}
+
+static
+void
+print
+    (euler_state *p_state
+    )
+{
+    printf("sum == %d\n", p_state->sum);
+}
+
+static
+void
+solve
+    (euler_state *p_state
+    )
+{
+
     int i;
     int sum = 0;
     for (i = 0; i < 1000; i++)
@@ -30,5 +68,16 @@ solve00001
             sum += i;
         }
     }
-    return sum;
+    p_state->sum = sum;
 }
+
+static const euler_solution problem00001 =
+{
+    /* name   */ "Multiples of 3 and 5",
+    /* init   */ &init,
+    /* memory */ &memory,
+    /* solve  */ &solve,
+    /* print  */ &print,
+};
+
+const euler_solution *p_problem00001 = &problem00001;
