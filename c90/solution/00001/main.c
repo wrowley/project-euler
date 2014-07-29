@@ -7,20 +7,26 @@ extern const euler_solution *p_problem00001;
 
 int
 main
-    (void)
+    (int argc, char **argv)
 {
 
-    euler_state *p_state;
-    void *buffer;
+    /* A buffer to print the solution to */
+    char soln_buffer[4096];
+
+    /* Allocated memory required by the solution */
     const size_t mem_needed = p_problem00001->memory();
+    void *p_buffer = malloc(mem_needed);
 
-    buffer = malloc(mem_needed);
+    /* Solve and render the solution */
+    p_problem00001->solve(p_buffer);
+    p_problem00001->render(p_buffer,soln_buffer);
 
-    p_state = p_problem00001->init(buffer);
-    p_problem00001->solve(p_state);
-    p_problem00001->print(p_state);
+    /* Print it out */
+    printf("%s\n",soln_buffer);
 
-    free(buffer);
+    free(p_buffer);
 
+    (void)argc;
+    (void)argv;
     return 0;
 }

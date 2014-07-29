@@ -34,33 +34,25 @@ memory
 }
 
 static
-euler_state *
-init
-    (void        *p_mem
-    )
-{
-    euler_state *p_state = (euler_state*)p_mem;
-    return p_state;
-}
-
-static
 void
-print
-    (euler_state *p_state
+render
+    (const void *p_mem
+    ,char *p_str
     )
 {
-    printf("sum == %d\n", p_state->sum);
+    const euler_state *p_state = p_mem;
+    sprintf(p_str,"%d", p_state->sum);
 }
 
 static
 void
 solve
-    (euler_state *p_state
-    )
+    (void *p_mem)
 {
 
     int i;
     int sum = 0;
+    euler_state *p_state = p_mem;
     for (i = 0; i < 1000; i++)
     {
         if (is_multiple_of(i,3) || is_multiple_of(i,5))
@@ -74,10 +66,9 @@ solve
 static const euler_solution problem00001 =
 {
     /* name   */ "Multiples of 3 and 5",
-    /* init   */ &init,
     /* memory */ &memory,
     /* solve  */ &solve,
-    /* print  */ &print,
+    /* render */ &render,
 };
 
 const euler_solution *p_problem00001 = &problem00001;
