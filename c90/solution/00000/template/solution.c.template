@@ -1,20 +1,49 @@
 /**
-  * Problem description here
+  * Problem description goes here
   */
+
 #include <stdio.h>
-#include "solution.h"
+#include "common/eulersolution.h"
+
+struct euler_state_s
+{
+    int answer;
+};
+
+static
+size_t
+memory
+    ()
+{
+    return sizeof(euler_state);
+}
 
 static
 void
-print_solution
-    (euler_solution *p_solution)
+solve
+    (void *p_mem)
 {
-    printf("no solution yet\n");
+    euler_state *p_state = p_mem;
+    p_state->answer = 0;
 }
 
+static
 void
-${SOLUTION_FUNCTION_NAME}
-    (euler_solution *p_solution)
+render
+    (const void *p_mem
+    ,char *p_str
+    )
 {
-    p_solution->print_solution = print_solution;
+    const euler_state *p_state = p_mem;
+    sprintf(p_str,"%d", p_state->answer);
 }
+
+static const euler_solution ${SOLUTION_FUNCTION_NAME} =
+{
+    /* name   */ "Problem Name",
+    /* memory */ &memory,
+    /* solve  */ &solve,
+    /* render */ &render,
+};
+
+const euler_solution *p_${SOLUTION_FUNCTION_NAME} = &${SOLUTION_FUNCTION_NAME};

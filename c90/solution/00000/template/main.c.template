@@ -1,12 +1,31 @@
-#include "solution.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "common/eulersolution.h"
+
+extern const euler_solution *p_${SOLUTION_FUNCTION_NAME};
 
 int
 main
-    (void)
+    (int argc, char **argv)
 {
+    /* A buffer to print the solution to */
+    char soln_buffer[4096];
 
-    euler_solution soln;
-    ${SOLUTION_FUNCTION_NAME}(&soln);
-    soln.print_solution(&soln);
+    /* Allocated memory required by the solution */
+    const size_t mem_needed = p_${SOLUTION_FUNCTION_NAME}->memory();
+    void *p_buffer = malloc(mem_needed);
+
+    /* Solve and render the solution */
+    p_${SOLUTION_FUNCTION_NAME}->solve(p_buffer);
+    p_${SOLUTION_FUNCTION_NAME}->render(p_buffer,soln_buffer);
+
+    /* Print it out */
+    printf("%s\n",soln_buffer);
+
+    free(p_buffer);
+
+    (void)argc;
+    (void)argv;
     return 0;
 }

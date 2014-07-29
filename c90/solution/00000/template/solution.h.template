@@ -1,5 +1,0 @@
-#include "common/eulersolution.h"
-
-void
-${SOLUTION_FUNCTION_NAME}
-    (euler_solution *p_solution);

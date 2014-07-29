@@ -22,20 +22,21 @@ def populate_solution_dir_with_file(
     substitutions,
     ):
 
-    assert(src.endswith('.template'))
-
     # Read source file
     with open(src,'r') as fp:
         src_lines = fp.readlines()
 
     # Make substitutions
-    dst_lines = []
-    for line in src_lines:
-        for subkey,subval in substitutions.items():
-            substring = '${' + subkey + '}'
-            while substring in line:
-                line = line.replace(substring,subval)
-        dst_lines.append(line)
+    if src.endswith('.template'):
+        dst_lines = []
+        for line in src_lines:
+            for subkey,subval in substitutions.items():
+                substring = '${' + subkey + '}'
+                while substring in line:
+                    line = line.replace(substring,subval)
+            dst_lines.append(line)
+    else:
+        dst_lines = src_lines
 
     # Write out destination file
     with open(dst,'w+') as fp:
@@ -48,21 +49,19 @@ def main(solution_num):
     make_path(solution_dir)
 
     substitutions = {
-        'SOLUTION_FUNCTION_NAME' : 'solve' + solution_name,
+        'SOLUTION_FUNCTION_NAME' : 'problem' + solution_name,
     }
 
     # Populate directory
-    templates = [
-        'Makefile',
-        'main.c',
-        'solution.h',
-        'solution.c',
-    ]
-    for template_base in templates:
-        template = template_base + '.template'
+    templates = {
+        'Makefile'            : 'Makefile'   ,
+        'main.c.template'     : 'main.c'     ,
+        'solution.c.template' : 'solution.c' ,
+    }
+    for src,dst in templates.items():
         populate_solution_dir_with_file(
-            os.path.join(TEMPLATE_DIR, template),
-            os.path.join(solution_dir, template_base),
+            os.path.join(TEMPLATE_DIR, src),
+            os.path.join(solution_dir, dst),
             substitutions,
             )
 
