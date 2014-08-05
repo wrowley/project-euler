@@ -1,6 +1,6 @@
 CC=gcc
 INCLUDE=../..
-CFLAGS=-c -Wall -I$(INCLUDE)
+CFLAGS=-g -c -Wall -I$(INCLUDE)
 
 solve: solution.o main.o
 	$(CC) $(LDFLAGS) solution.o main.o -o solve.out

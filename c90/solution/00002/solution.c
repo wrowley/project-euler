@@ -11,7 +11,7 @@
 
 struct euler_state_s
 {
-    long answer;
+    unsigned long answer;
 };
 
 static
@@ -32,16 +32,16 @@ solve
     unsigned long f1;
     unsigned long tmp;
 
-    unsigned long sum = 0;
+    p_state->answer = 0;
 
     for (f0 = 0, f1 = 1; f1 < 4000000; tmp = f1, f1 += f0, f0 = tmp)
     {
         if (!(f1 & 1))
         {
-            sum += f1;
+            p_state->answer += f1;
         }
     }
-    p_state->answer = sum;
+
 }
 
 static
@@ -52,7 +52,7 @@ render
     )
 {
     const euler_state *p_state = p_mem;
-    sprintf(p_str,"%d", p_state->answer);
+    sprintf(p_str,"%lu", p_state->answer);
 }
 
 static const euler_solution problem00002 =
