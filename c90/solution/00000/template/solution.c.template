@@ -15,7 +15,9 @@ size_t
 memory
     ()
 {
-    return sizeof(euler_state);
+    size_t sz = sizeof(euler_state);
+
+    return sz;
 }
 
 static
@@ -24,6 +26,8 @@ solve
     (void *p_mem)
 {
     euler_state *p_state = p_mem;
+    p_mem = (char*)p_mem + sizeof(euler_state);
+
     p_state->answer = 0;
 }
 
