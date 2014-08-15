@@ -38,7 +38,7 @@ render
     sprintf(p_str,"%lu", p_state->answer);
 }
 
-static const euler_solution ${SOLUTION_FUNCTION_NAME} =
+static const euler_solution problem00005 =
 {
     /* name   */ "Problem Name",
     /* memory */ &memory,
@@ -46,4 +46,4 @@ static const euler_solution ${SOLUTION_FUNCTION_NAME} =
     /* render */ &render,
 };
 
-const euler_solution *p_${SOLUTION_FUNCTION_NAME} = &${SOLUTION_FUNCTION_NAME};
+const euler_solution *p_problem00005 = &problem00005;
