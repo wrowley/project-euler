@@ -22,7 +22,7 @@ is_multiple_of
     ,int factor
     )
 {
-    return (((a/factor)*factor) == a);
+    return (a % factor == 0);
 }
 
 static
