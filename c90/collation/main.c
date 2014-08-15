@@ -5,17 +5,26 @@
 
 extern const euler_solution *p_problem00001;
 extern const euler_solution *p_problem00002;
-
+extern const euler_solution *p_problem00003;
+extern const euler_solution *p_problem00004;
+extern const euler_solution *p_problem00005;
+extern const euler_solution *p_problem00006;
+extern const euler_solution *p_problem00007;
 
 int
 main
     (int argc, char **argv)
 {
-    /* All available solutions. This is gonna get unwieldy */
+    /* All available solutions. This is gonna get unwieldy (hopefully) */
     const euler_solution *solns[] =
     {
         p_problem00001,
         p_problem00002,
+        p_problem00003,
+        p_problem00004,
+        p_problem00005,
+        p_problem00006,
+        p_problem00007,
     };
     const static int NUM_SOLNS = sizeof(solns)/sizeof(euler_solution*);
 
@@ -37,7 +46,10 @@ main
         p_problem->render(p_buffer,soln_buffer);
 
         /* Print it out */
+        printf("Problem %d - ",i+1);
+        printf("%s\n",p_problem->name);
         printf("%s\n",soln_buffer);
+        printf("\n");
 
         free(p_buffer);
     }
