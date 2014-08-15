@@ -1,6 +1,6 @@
 CC=gcc
 INCLUDE=../..
-CFLAGS=-std=c90 -g -c -Wall -I$(INCLUDE)
+CFLAGS=-pedantic -std=c90 -g -c -Wall -I$(INCLUDE)
 
 solve: solution.o main.o
 	$(CC) $(LDFLAGS) solution.o main.o -o solve.out
