@@ -18,11 +18,11 @@
 typedef struct
 {
     /* How many digits the number can hold */
-    unsigned  num_digits;
+    unsigned       num_digits;
     /* The current state of the number */
-    unsigned *result;
+    unsigned long *result;
     /* A buffer required for calculating intermediate state */
-    unsigned *scratch;
+    unsigned long *scratch;
 } extensible_uint;
 
 static
@@ -38,12 +38,12 @@ extensible_uint_init
     p_state->num_digits = num_digits;
 
     p_state->result = p_mem;
-    p_mem = (char*)p_mem + sizeof(unsigned) * num_digits;
-    memset(p_state->result, 0, sizeof(unsigned) * num_digits);
+    p_mem = (char*)p_mem + sizeof(unsigned long) * num_digits;
+    memset(p_state->result, 0, sizeof(unsigned long) * num_digits);
 
     p_state->scratch = p_mem;
-    p_mem = (char*)p_mem + sizeof(unsigned) * num_digits;
-    memset(p_state->scratch, 0, sizeof(unsigned) * num_digits);
+    p_mem = (char*)p_mem + sizeof(unsigned long) * num_digits;
+    memset(p_state->scratch, 0, sizeof(unsigned long) * num_digits);
 
     return p_state;
 }
@@ -59,9 +59,9 @@ extensible_uint_memory
     /* State */
     sz += sizeof(extensible_uint);
     /* Buffer for real digits */
-    sz += sizeof(unsigned) * num_digits;
+    sz += sizeof(unsigned long) * num_digits;
     /* Buffer for scratch digits */
-    sz += sizeof(unsigned) * num_digits;
+    sz += sizeof(unsigned long) * num_digits;
 
     return sz;
 }
@@ -71,7 +71,7 @@ static
 void
 extensible_uint_populate
     (      extensible_uint *p_state
-    ,const unsigned        *p_digits
+    ,const unsigned long   *p_digits
     ,const unsigned         num_digits
     )
 {
@@ -90,22 +90,22 @@ static
 int
 extensible_uint_divide
     (extensible_uint *p_state
-    ,unsigned         divisor
+    ,unsigned long    divisor
     )
 {
     unsigned i;
-    unsigned dividend = 0;
+    unsigned long dividend = 0;
 
     /* We're working in the scratch buffer */
     memset
         (p_state->scratch
         ,0
-        ,p_state->num_digits * sizeof(unsigned)
+        ,p_state->num_digits * sizeof(unsigned long)
         );
 
     for (i = 0; i < p_state->num_digits; i++)
     {
-        unsigned digit = p_state->result[i];
+        unsigned long digit = p_state->result[i];
 
         /* Dividend grows by the current digit in the result */
         dividend += digit;
@@ -130,7 +130,7 @@ extensible_uint_divide
         memmove
             (p_state->result
             ,p_state->scratch
-            ,p_state->num_digits * sizeof(unsigned)
+            ,p_state->num_digits * sizeof(unsigned long)
             );
         return 1;
     }
@@ -160,7 +160,7 @@ extensible_uint_print
 
 struct euler_state_s
 {
-    unsigned answer;
+    unsigned long    answer;
     extensible_uint *exuint;
 };
 
@@ -181,11 +181,11 @@ solve
     (void *p_mem)
 {
     /* The problem looks like this */
-    static const unsigned number[NUM_DIGITS] = {6,0,0,8,5,1,4,7,5,1,4,3};
+    static const unsigned long number[NUM_DIGITS] = {6,0,0,8,5,1,4,7,5,1,4,3};
     /* The maximum factor that it could possibly be is floor(sqrt(600851475143)) */
-    static const unsigned MAX_FACTOR         = 775146;
+    static const unsigned long MAX_FACTOR         = 775146;
 
-    unsigned factor;
+    unsigned long factor;
 
     /* Set up state */
     euler_state *p_state = p_mem;
@@ -227,11 +227,11 @@ static
 void
 render
     (const void *p_mem
-    ,char *p_str
+    ,      char *p_str
     )
 {
     const euler_state *p_state = p_mem;
-    sprintf(p_str,"%d", p_state->answer);
+    sprintf(p_str,"%lu", p_state->answer);
 }
 
 static const euler_solution problem00003 =
