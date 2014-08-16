@@ -7,7 +7,7 @@
 
 struct euler_state_s
 {
-    long answer;
+    unsigned long answer;
 };
 
 static
