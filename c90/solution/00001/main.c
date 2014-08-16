@@ -9,7 +9,6 @@ int
 main
     (int argc, char **argv)
 {
-
     /* A buffer to print the solution to */
     char soln_buffer[4096];
 
@@ -18,8 +17,8 @@ main
     void *p_buffer = malloc(mem_needed);
 
     /* Solve and render the solution */
-    p_problem00001->solve(p_buffer);
-    p_problem00001->render(p_buffer,soln_buffer);
+    euler_state *p_state = p_problem00001->solve(p_buffer);
+    p_problem00001->render(p_state,soln_buffer);
 
     /* Print it out */
     printf("%s\n",soln_buffer);

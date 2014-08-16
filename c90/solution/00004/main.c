@@ -17,8 +17,8 @@ main
     void *p_buffer = malloc(mem_needed);
 
     /* Solve and render the solution */
-    p_problem00004->solve(p_buffer);
-    p_problem00004->render(p_buffer,soln_buffer);
+    euler_state *p_state = p_problem00004->solve(p_buffer);
+    p_problem00004->render(p_state,soln_buffer);
 
     /* Print it out */
     printf("%s\n",soln_buffer);
