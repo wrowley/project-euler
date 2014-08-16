@@ -22,7 +22,7 @@ MAKEFILE_TEMPLATE = """\
 CC=gcc
 LD=gcc
 
-CC_INCLUDE=../
+CC_INCLUDE=..
 LD_INCLUDE=../mathlib/lib
 
 CFLAGS=-I$(CC_INCLUDE) -pedantic -std=c90 -g -c -Wall

@@ -16,12 +16,14 @@ extern const euler_solution *p_problem00008;
 
 int
 main
-    (int argc, char **argv)
+    (int argc
+    ,char **argv
+    )
 {
     /* All available solutions. This is gonna get unwieldy (hopefully) */
     const euler_solution *solns[NUM_SOLNS];
 
-    int i;
+    unsigned i;
 
     /* Had to go this way due to Error: initializer element is not computable at
      * load time */
@@ -36,13 +38,15 @@ main
 
     for (i = 0; i < NUM_SOLNS; i++)
     {
-        /* A buffer to print the solution to */
+        /* A buffer to print the solution to. Just guessing at how big this
+         * ought to be... */
         char soln_buffer[4096];
 
         /* Grab a problem */
         const euler_solution *p_problem = solns[i];
 
-        /* Get some memory for it */
+        /* Get some memory for it. It is sensible to allocate memory on a
+         * problem-by-problem basis because then valgrind can be helpful. */
         const size_t mem_needed = p_problem->memory();
         void *p_buffer = malloc(mem_needed);
 
