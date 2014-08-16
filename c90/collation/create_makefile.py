@@ -14,14 +14,19 @@ CLEAN_SOLUTION_TEMPLATE = """\
 """
 
 BUILD_COLLATION_TEMPLATE = """\
-collation: main.o {solution_list}
-\t$(CC) $(LDFLAGS) main.o {solution_object_list} -o collation.out\
+collation: main.o {solution_list} mathlib.a
+\t$(CC) $(LDFLAGS) main.o {solution_object_list} -o collation.out -l:mathlib.a\
 """
 
 MAKEFILE_TEMPLATE = """\
 CC=gcc
-INCLUDE=..
-CFLAGS=-c -Wall -I$(INCLUDE)
+LD=gcc
+
+CC_INCLUDE=../
+LD_INCLUDE=../mathlib/lib
+
+CFLAGS=-I$(CC_INCLUDE) -pedantic -std=c90 -g -c -Wall
+LDFLAGS=-L$(LD_INCLUDE)
 
 {build_collation_step}
 
@@ -30,8 +35,12 @@ main.o: main.c
 
 {build_solution_steps}
 
+mathlib.a: ../mathlib/src/* ../mathlib/include/*
+\t$(MAKE) -C ../mathlib/make
+
 clean:
 \trm -rf *.o collation.out
+\t$(MAKE) -C ../mathlib/make clean
 {clean_solution_steps}
 """
 
@@ -71,4 +80,4 @@ def main(solution_numbers):
 
 
 if __name__ == '__main__':
-    main(range(1,8))
+    main(range(1,9))

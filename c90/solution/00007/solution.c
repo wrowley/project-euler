@@ -67,7 +67,7 @@ solve
             for (factor = 2; factor <= SQRT_SIZE_OF_SIEVE; factor+=1)
             {
                 unsigned long result = si * factor;
-                if (result > SIZE_OF_SIEVE)
+                if (result >= SIZE_OF_SIEVE)
                 {
                     break;
                 }
