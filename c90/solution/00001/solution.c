@@ -36,16 +36,15 @@ memory
 static
 void
 render
-    (const void *p_mem
-    ,char *p_str
+    (const euler_state *p_state
+    ,      char        *p_str
     )
 {
-    const euler_state *p_state = p_mem;
     sprintf(p_str,"%d", p_state->sum);
 }
 
 static
-void
+euler_state *
 solve
     (void *p_mem)
 {
@@ -61,6 +60,7 @@ solve
         }
     }
     p_state->sum = sum;
+    return p_state;
 }
 
 static const euler_solution problem00001 =

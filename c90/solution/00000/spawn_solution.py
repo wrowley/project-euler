@@ -60,10 +60,10 @@ def main(solution_num, force, makefiles_only):
     # Populate directory
     templates = {
         'Makefile'            : 'Makefile'   ,
+        'main.c.template'     : 'main.c'     ,
     }
     if not makefiles_only:
         templates.update({
-            'main.c.template'     : 'main.c'     ,
             'solution.c.template' : 'solution.c' ,
         }
     )
@@ -89,13 +89,13 @@ if __name__=='__main__':
         help="Force the rollout of a solution template, even if the directory exists",
         )
     parser.add_argument(
-        "--makefile-only",
+        "--dont-wipe-solution",
         "-m",
         action="store_true",
         default=False,
-        help="Only update the Makefile of each solution",
+        help="Only update the Makefile and main.c of each solution",
         )
 
     (args) = parser.parse_args(sys.argv[1:])
 
-    main(args.solution_num, args.force, args.makefile_only)
+    main(args.solution_num, args.force, args.dont_wipe_solution)

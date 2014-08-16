@@ -21,7 +21,7 @@ memory
 }
 
 static
-void
+euler_state *
 solve
     (void *p_mem)
 {
@@ -59,16 +59,17 @@ solve
     answer *= 1 ; /* 2  = 2             */
 
     p_state->answer = answer;
+
+    return p_state;
 }
 
 static
 void
 render
-    (const void *p_mem
-    ,      char *p_str
+    (const euler_state *p_state
+    ,      char        *p_str
     )
 {
-    const euler_state *p_state = p_mem;
     sprintf(p_str,"%lu", p_state->answer);
 }
 

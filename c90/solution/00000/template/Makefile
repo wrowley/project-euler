@@ -17,7 +17,8 @@ main.o: main.c
 	$(CC) $(CFLAGS) main.c
 
 mathlib.a: ../../mathlib/src/* ../../mathlib/include/*
-	$(MAKE) -s -C ../../mathlib/make
+	$(MAKE) -C ../../mathlib/make
 
 clean:
+	$(MAKE) -C ../../mathlib/make clean
 	rm -rf *.o solve.out
