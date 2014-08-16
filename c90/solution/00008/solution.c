@@ -29,14 +29,17 @@
 #include "common/eulersolution.h"
 #include "mathlib/include/extuint.h"
 
+#define MAX_NUM_DIGITS 13
+
 struct euler_state_s
 {
     /* pow(9,13) = Xe+12 > pow(2,32)    -> so an unsigned long wouldn't be good enough
      * pow(6,13) > pow(2,32)            -> so an unsigned long wouldn't be good enough
      * pow(5,13) < pow(2,32)            -> so an unsigned long might be good enough
-     * (9! * 9 * 9 * 9 * 9) < pow(2,32) -> perhaps let's risk it for now
+     * (9! * 9 * 9 * 9 * 9) < pow(2,32) -> eh, better use a proper number
      */
-    unsigned long answer;
+    extensible_uint *p_extuint_result;
+    extensible_uint *p_extuint_scratch;
 };
 
 static
@@ -46,13 +49,14 @@ memory
 {
     size_t sz = sizeof(euler_state);
 
-    sz += extensible_uint_memory(13);
+    sz += extensible_uint_memory(MAX_NUM_DIGITS);
+    sz += extensible_uint_memory(MAX_NUM_DIGITS);
 
     return sz;
 }
 
 static
-void
+euler_state *
 solve
     (void *p_mem)
 {
@@ -95,41 +99,68 @@ solve
 
     static const unsigned NUM_DIGITS  = sizeof(DIGITS)/sizeof(unsigned long);
 
-    static const unsigned WINDOW_SIZE = 13;
+    static const unsigned WINDOW_SIZE = MAX_NUM_DIGITS;
 
     unsigned i, j;
-    unsigned largest_total = 0;
 
     euler_state *p_state = p_mem;
     p_mem = (char*)p_mem + sizeof(euler_state);
 
+    p_state->p_extuint_result =
+        extensible_uint_init
+          (p_mem
+          ,MAX_NUM_DIGITS
+          );
+    p_mem = (char*)p_mem + extensible_uint_memory(WINDOW_SIZE);
+
     for (i = 0; i < NUM_DIGITS - WINDOW_SIZE; i++)
     {
-        unsigned long total = 1;
+        /* Initialise the scratch number */
+        p_state->p_extuint_scratch =
+            extensible_uint_init
+                (p_mem
+                ,MAX_NUM_DIGITS
+                );
+        extensible_uint_add_ulong
+            (p_state->p_extuint_scratch
+            ,1ul
+            );
+
+        /* Multiply through the numbers */
         for (j = 0; j < WINDOW_SIZE; j++)
         {
-            total *= DIGITS[i + j];
+            extensible_uint_multiply_ulong
+                (p_state->p_extuint_scratch
+                ,DIGITS[i + j]
+                );
         }
-        largest_total = (total > largest_total) ? total : largest_total;
+
+        /* Update the actual result if necessary */
+        if (extensible_uint_lt(p_state->p_extuint_result, p_state->p_extuint_scratch))
+        {
+            extensible_uint_copy(p_state->p_extuint_scratch, p_state->p_extuint_result);
+        }
     }
 
-    p_state->answer = largest_total;
+    return p_state;
 }
 
 static
 void
 render
-    (const void *p_mem
-    ,      char *p_str
+    (const euler_state *p_state
+    ,      char        *p_str
     )
 {
-    const euler_state *p_state = p_mem;
-    sprintf(p_str,"%lu", p_state->answer);
+    extensible_uint_render
+        (p_state->p_extuint_result
+        ,p_str
+        );
 }
 
 static const euler_solution problem00008 =
 {
-    /* name   */ "Problem Name",
+    /* name   */ "Largest product in a series",
     /* memory */ &memory,
     /* solve  */ &solve,
     /* render */ &render,

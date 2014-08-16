@@ -25,7 +25,7 @@ typedef struct euler_solution_s
      * argument of a buffer of a size returned by memory(). It must be able
      * to solve the problem without any assumptions about the contents of
      * the buffer. */
-    void                  (*solve)(void *);
+    euler_state*          (*solve)(void *);
 
     /* This function simply exists to render the solution of the problem to
      * a buffer of chars. Behaviour is undefined unless its first argument is
@@ -35,7 +35,7 @@ typedef struct euler_solution_s
      * of chars guaranteed to be large enough to fit the whole solution, just as
      * it would be copy-pasted into the project-euler website for any
      * given problem. */
-    void                  (*render)(const void *, char *);
+    void                  (*render)(const euler_state*, char *);
 } euler_solution;
 
 #endif /* EULERSOLUTION_H */
