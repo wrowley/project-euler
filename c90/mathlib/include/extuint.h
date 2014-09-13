@@ -69,6 +69,15 @@ extensible_uint_add_ulong
     ,unsigned long    addend
     );
 
+/* Adds a extensible uint to the extensible uint. They must have been initialised with
+ * the same number of digits. It is undefined behaviour if p_state does not have enough
+ * headroom for the addition to take place. */
+void
+extensible_uint_add_extensible_uint
+    (      extensible_uint *p_state
+    ,const extensible_uint *p_addend
+    );
+
 /* This performs an unsigned integer division, and stores the result if
  * successful.
  * It returns a boolean indicating its own success (i.e. whether the

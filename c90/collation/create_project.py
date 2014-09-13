@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+import os
+import mainc
+
+HERE = os.path.dirname(__file__)
+
 SOLUTION_FORMAT = "%05d"
 
 SOLUTION_OBJECT_TEMPLATE = """../solution/{solution_number}/solution.o"""
@@ -46,13 +51,21 @@ clean:
 
 def main(solution_numbers):
 
+    # Makefile stuff
     solution_list = []
     solution_object_list = []
     build_solution_steps = []
     clean_solution_steps = []
 
+    # main.c stuff
+    c_idx = 0
+    extern_solutions   = []
+    soln_array_entries = []
+
+    num_solutions = len(solution_numbers)
 
     for solnum in solution_numbers:
+        # Makefile stuff
         solution_number = (SOLUTION_FORMAT % solnum)
         solution_object = SOLUTION_OBJECT_TEMPLATE.format(solution_number=solution_number)
         build_solution_step = BUILD_SOLUTION_TEMPLATE.format(solution_number=solution_number)
@@ -63,6 +76,21 @@ def main(solution_numbers):
         build_solution_steps.append(build_solution_step)
         clean_solution_steps.append(clean_solution_step)
 
+        # main.c stuff
+        extern_solutions.append(
+            mainc.EXTERN_SOLUTION_TEMPLATE.format(
+                five_digit_problem_number=solution_number,
+                )
+            )
+
+        soln_array_entries.append(
+            mainc.SOLN_ARRAY_ENTRY_TEMPLATE.format(
+                soln_num=c_idx,
+                five_digit_problem_number=solution_number,
+                )
+            )
+
+        c_idx += 1
 
     build_collation_step = \
         BUILD_COLLATION_TEMPLATE.format(
@@ -70,14 +98,28 @@ def main(solution_numbers):
             solution_object_list=' '.join(solution_object_list),
             )
 
+    # Construct makefile contents
     makefile = \
         MAKEFILE_TEMPLATE.format(
             build_collation_step=build_collation_step,
             build_solution_steps='\n'.join(build_solution_steps),
             clean_solution_steps='\n'.join(clean_solution_steps),
             )
-    print makefile
+
+    with open(os.path.join(HERE,'Makefile'),'w+') as fp:
+        fp.write(makefile)
+
+    # Construnct main.c contents
+    main_c = \
+        mainc.MAIN_C_TEMPLATE.format(
+            num_solutions=num_solutions,
+            extern_solutions='\n'.join(extern_solutions),
+            soln_array_entries='\n'.join(soln_array_entries),
+            )
+
+    with open(os.path.join(HERE,'main.c'),'w+') as fp:
+        fp.write(main_c)
 
 
 if __name__ == '__main__':
-    main(range(1,9))
+    main(range(1,14))

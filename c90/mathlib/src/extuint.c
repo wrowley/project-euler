@@ -142,11 +142,16 @@ extensible_uint_populate
     ,const unsigned         num_digits
     )
 {
+    /* If the number has 10 digits, and only 9 are specified, start filling at index 1 */
+    unsigned offset = p_state->num_digits - num_digits;
     unsigned i;
-    p_state->num_digits = num_digits;
-    for (i = 0; i < p_state->num_digits; i++)
+    for (i = 0; i < offset; i++)
     {
-        p_state->result[i] = p_digits[i];
+        p_state->result[i] = 0;
+    }
+    for (; i < p_state->num_digits; i++)
+    {
+        p_state->result[i] = p_digits[i - offset];
     }
 }
 
@@ -177,6 +182,24 @@ extensible_uint_add_ulong
 
     /* Add to the last digit */
     p_state->result[last_digit_index] += addend;
+
+    normalise_base(p_state);
+
+}
+
+void
+extensible_uint_add_extensible_uint
+    (      extensible_uint *p_state
+    ,const extensible_uint *p_addend
+    )
+{
+    unsigned i;
+    assert(p_state->num_digits == p_addend->num_digits);
+
+    for (i = 0; i < p_state->num_digits; i++)
+    {
+        p_state->result[i] += p_addend->result[i];
+    }
 
     normalise_base(p_state);
 

@@ -1,30 +1,25 @@
+EXTERN_SOLUTION_TEMPLATE  = """\
+extern const euler_solution *p_problem{five_digit_problem_number};"""
+
+SOLN_ARRAY_ENTRY_TEMPLATE = """\
+    solns[{soln_num}] = p_problem{five_digit_problem_number};"""
+
+MAIN_C_TEMPLATE = """\
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "common/eulersolution.h"
 
-#define NUM_SOLNS 13
+#define NUM_SOLNS {num_solutions}
 
-extern const euler_solution *p_problem00001;
-extern const euler_solution *p_problem00002;
-extern const euler_solution *p_problem00003;
-extern const euler_solution *p_problem00004;
-extern const euler_solution *p_problem00005;
-extern const euler_solution *p_problem00006;
-extern const euler_solution *p_problem00007;
-extern const euler_solution *p_problem00008;
-extern const euler_solution *p_problem00009;
-extern const euler_solution *p_problem00010;
-extern const euler_solution *p_problem00011;
-extern const euler_solution *p_problem00012;
-extern const euler_solution *p_problem00013;
+{extern_solutions}
 
 int
 main
     (int    argc
     ,char **argv
     )
-{
+{{
     /* All available solutions. This is gonna get unwieldy (hopefully) */
     const euler_solution *solns[NUM_SOLNS];
 
@@ -32,22 +27,10 @@ main
 
     /* Had to go this way due to Error: initializer element is not computable at
      * load time */
-    solns[0] = p_problem00001;
-    solns[1] = p_problem00002;
-    solns[2] = p_problem00003;
-    solns[3] = p_problem00004;
-    solns[4] = p_problem00005;
-    solns[5] = p_problem00006;
-    solns[6] = p_problem00007;
-    solns[7] = p_problem00008;
-    solns[8] = p_problem00009;
-    solns[9] = p_problem00010;
-    solns[10] = p_problem00011;
-    solns[11] = p_problem00012;
-    solns[12] = p_problem00013;
+{soln_array_entries}
 
     for (i = 0; i < NUM_SOLNS; i++)
-    {
+    {{
         /* A buffer to print the solution to. Just guessing at how big this
          * ought to be... */
         char soln_buffer[4096];
@@ -66,14 +49,15 @@ main
 
         /* Print it out */
         printf("Problem %d - ", i+1);
-        printf("%s\n", p_problem->name);
-        printf("%s\n", soln_buffer);
-        printf("\n");
+        printf("%s\\n", p_problem->name);
+        printf("%s\\n", soln_buffer);
+        printf("\\n");
 
         free(p_buffer);
-    }
+    }}
 
     (void)argc;
     (void)argv;
     return 0;
-}
+}}
+"""
