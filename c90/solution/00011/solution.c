@@ -31,6 +31,9 @@
 #include <stdio.h>
 #include "common/eulersolution.h"
 
+#define GRID_SIZE 20
+#define FILT_SIZE 4
+
 struct euler_state_s
 {
     unsigned long answer;
@@ -51,8 +54,6 @@ euler_state *
 solve
     (void *p_mem)
 {
-    #define GRID_SIZE 20
-    #define FILT_SIZE 4
     static const unsigned long grid[GRID_SIZE * GRID_SIZE] = {
          8,  2, 22, 97, 38, 15,  0, 40,  0, 75,  4,  5,  7, 78, 52, 12, 50, 77, 91,  8,
         49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48,  4, 56, 62,  0,

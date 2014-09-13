@@ -79,7 +79,7 @@ extensible_uint_divide_ulong
     ,unsigned long    divisor
     );
 
-/* This performs an integer muliplication. */
+/* This performs an integer multiplication. */
 void
 extensible_uint_multiply_ulong
     (extensible_uint *p_state
