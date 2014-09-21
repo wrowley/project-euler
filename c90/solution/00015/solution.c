@@ -22,8 +22,6 @@ typedef struct pascals_triangle_s
     unsigned          num_cells;
     extensible_uint **p_cells;
     int              *p_initialised;
-
-    extensible_uint  *p_scratch_extuint;
 } pascals_triangle;
 
 /* To get the offset to the start of Row N, call as pascals_triangle_row_offset(N-1).
@@ -157,10 +155,6 @@ pascals_triangle_init
         p_triangle->p_cells[i] = extensible_uint_init(p_mem, num_digits);
         p_mem = (char*)p_mem + extensible_uint_memory(num_digits);
     }
-
-    /* Scratch extuint */
-    p_triangle->p_scratch_extuint = extensible_uint_init(p_mem, num_digits);
-    p_mem = (char*)p_mem + extensible_uint_memory(num_digits);
 
     /* Allocate the bit which checks whether we've calculated a cell already */
     p_triangle->p_initialised = p_mem;
