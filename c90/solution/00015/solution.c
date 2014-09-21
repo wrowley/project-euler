@@ -11,7 +11,7 @@
 
 struct euler_state_s
 {
-    unsigned long answer;
+    extensible_uint *p_extuint_result;
 };
 
 #define PASCAL_DIGITS 40
@@ -19,10 +19,11 @@ struct euler_state_s
 
 typedef struct pascals_triangle_s
 {
+    unsigned          num_cells;
     extensible_uint **p_cells;
     int              *p_initialised;
 
-    unsigned          num_cells;
+    extensible_uint  *p_scratch_extuint;
 } pascals_triangle;
 
 /* To get the offset to the start of Row N, call as pascals_triangle_row_offset(N-1).
@@ -53,17 +54,54 @@ pascals_triangle_row_offset
 }
 
 static
-const extensible_uint*
+const extensible_uint *
 pascals_triangle_choose
     (pascals_triangle *p_triangle
     ,unsigned long     n
     ,unsigned long     k
     )
 {
-    unsigned offset  = pascals_triangle_row_offset(n - 1);
-    unsigned cellnum = offset + k;
+    const unsigned offset  = (n == 0) ? 0 : pascals_triangle_row_offset(n - 1);
+    const unsigned cellnum = offset + k;
 
-    if (p_triangle->p_initialised[cellnum])
+    const unsigned initialised      = p_triangle->p_initialised[cellnum];
+          extensible_uint *p_result = p_triangle->p_cells[cellnum];
+
+    if (!initialised)
+    {
+        if ((k == n) || (k == 0))
+        {
+            static const unsigned long ONE[] = {1ul};
+            extensible_uint_populate(p_result, ONE, 1u);
+        }
+        else
+        {
+            /* Find its parents */
+            const extensible_uint *p_a =
+                pascals_triangle_choose
+                    (p_triangle
+                    ,n - 1
+                    ,k
+                    );
+            const extensible_uint *p_b =
+                pascals_triangle_choose
+                    (p_triangle
+                    ,n - 1
+                    ,k - 1
+                    );
+            extensible_uint_copy
+                (p_a
+                ,p_result
+                );
+            extensible_uint_add_extensible_uint
+                (p_result
+                ,p_b
+                );
+        }
+        p_triangle->p_initialised[cellnum] = 1;
+    }
+
+    return p_result;
 
 }
 
@@ -74,20 +112,22 @@ pascals_triangle_memory
     ,unsigned max_n
     )
 {
-    unsigned i;
     size_t mem = 0;
 
     /* This gives the number of cells required to form max_n rows without
      * exploiting symmetry */
     unsigned num_cells = pascals_triangle_row_offset(max_n);
-
     /* The struct */
     mem += sizeof(pascals_triangle);
     /* The cells themselves */
     mem += num_cells * sizeof(extensible_uint*);
     mem += num_cells * extensible_uint_memory(num_digits);
+    /* Scratch extuint */
+    mem += extensible_uint_memory(num_digits);
     /* Whether a given cell has been initialised */
     mem += num_cells * sizeof(int);
+
+    return mem;
 }
 
 static
@@ -118,6 +158,10 @@ pascals_triangle_init
         p_mem = (char*)p_mem + extensible_uint_memory(num_digits);
     }
 
+    /* Scratch extuint */
+    p_triangle->p_scratch_extuint = extensible_uint_init(p_mem, num_digits);
+    p_mem = (char*)p_mem + extensible_uint_memory(num_digits);
+
     /* Allocate the bit which checks whether we've calculated a cell already */
     p_triangle->p_initialised = p_mem;
     p_mem = (char*)p_mem + p_triangle->num_cells * sizeof(int);
@@ -137,6 +181,9 @@ memory
     ()
 {
     size_t sz = sizeof(euler_state);
+
+    sz +=
+        extensible_uint_memory(PASCAL_DIGITS);
 
     sz +=
         pascals_triangle_memory
@@ -164,7 +211,7 @@ solve
      * For N = 3; M = N - 1;
      *  we want
      *   1 + 3 + 6 |+ 6 + 3 +1;
-     *   2c0 + 3c1 + 4c2
+     *   2c0 + 3c1 + 4c2 |+
      *
      * For N = 4; M = N - 1;
      *  we want
@@ -191,11 +238,51 @@ solve
      * we actually want to calculate. Hmmm...
      */
 
+    const unsigned N = 20;
+    const unsigned M = N - 1;
 
-    euler_state *p_state = p_mem;
+    unsigned i;
+
+    euler_state *p_state;
+    pascals_triangle *p_triangle;
+
+    p_state = p_mem;
     p_mem = (char*)p_mem + sizeof(euler_state);
 
-    p_state->answer = 0;
+    p_state->p_extuint_result = extensible_uint_init(p_mem, PASCAL_DIGITS);
+    p_mem = (char*)p_mem + extensible_uint_memory(PASCAL_DIGITS);
+
+    p_triangle =
+        pascals_triangle_init
+            (p_mem
+            ,PASCAL_DIGITS
+            ,PASCAL_ROWS
+            );
+
+    p_mem = (char*)p_mem +
+        pascals_triangle_memory
+            (PASCAL_DIGITS
+            ,PASCAL_ROWS
+            );
+
+    for (i = 0; i <= M; i++)
+    {
+        const extensible_uint *p_choose =
+            pascals_triangle_choose
+                (p_triangle
+                ,M + i
+                ,i
+                );
+        extensible_uint_add_extensible_uint
+            (p_state->p_extuint_result
+            ,p_choose
+            );
+    }
+
+    extensible_uint_multiply_ulong
+        (p_state->p_extuint_result
+        ,2
+        );
 
     return p_state;
 }
@@ -207,7 +294,10 @@ render
     ,      char        *p_str
     )
 {
-    sprintf(p_str,"%lu", p_state->answer);
+    extensible_uint_render
+        (p_state->p_extuint_result
+        ,p_str
+        );
 }
 
 static const euler_solution problem00015 =
