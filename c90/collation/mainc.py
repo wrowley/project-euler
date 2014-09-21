@@ -48,7 +48,7 @@ main
         p_problem->render(p_state,soln_buffer);
 
         /* Print it out */
-        printf("Problem %d - ", i+1);
+        printf("Problem %02u - ", i+1);
         printf("%s\\n", p_problem->name);
         printf("%s\\n", soln_buffer);
         printf("\\n");

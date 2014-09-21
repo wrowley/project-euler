@@ -3,7 +3,7 @@
 
 #include "common/eulersolution.h"
 
-#define NUM_SOLNS 13
+#define NUM_SOLNS 15
 
 extern const euler_solution *p_problem00001;
 extern const euler_solution *p_problem00002;
@@ -18,6 +18,8 @@ extern const euler_solution *p_problem00010;
 extern const euler_solution *p_problem00011;
 extern const euler_solution *p_problem00012;
 extern const euler_solution *p_problem00013;
+extern const euler_solution *p_problem00014;
+extern const euler_solution *p_problem00015;
 
 int
 main
@@ -45,6 +47,8 @@ main
     solns[10] = p_problem00011;
     solns[11] = p_problem00012;
     solns[12] = p_problem00013;
+    solns[13] = p_problem00014;
+    solns[14] = p_problem00015;
 
     for (i = 0; i < NUM_SOLNS; i++)
     {
@@ -65,7 +69,7 @@ main
         p_problem->render(p_state,soln_buffer);
 
         /* Print it out */
-        printf("Problem %d - ", i+1);
+        printf("Problem %02u - ", i+1);
         printf("%s\n", p_problem->name);
         printf("%s\n", soln_buffer);
         printf("\n");
