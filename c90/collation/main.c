@@ -3,7 +3,7 @@
 
 #include "common/eulersolution.h"
 
-#define NUM_SOLNS 15
+#define NUM_SOLNS 16
 
 extern const euler_solution *p_problem00001;
 extern const euler_solution *p_problem00002;
@@ -20,6 +20,7 @@ extern const euler_solution *p_problem00012;
 extern const euler_solution *p_problem00013;
 extern const euler_solution *p_problem00014;
 extern const euler_solution *p_problem00015;
+extern const euler_solution *p_problem00016;
 
 int
 main
@@ -49,6 +50,7 @@ main
     solns[12] = p_problem00013;
     solns[13] = p_problem00014;
     solns[14] = p_problem00015;
+    solns[15] = p_problem00016;
 
     for (i = 0; i < NUM_SOLNS; i++)
     {
